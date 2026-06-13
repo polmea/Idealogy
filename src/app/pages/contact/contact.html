@@ -1,0 +1,72 @@
+<div class="contact-page">
+  <div class="container">
+    <section class="contact-hero">
+      <div>
+        <p class="eyebrow">Contact the team</p>
+        <h1>Questions or feedback?</h1>
+        <p>Send us a message and our developers will get back to you as soon as possible.</p>
+      </div>
+      <div class="contact-info-card">
+        <h2>Developer support</h2>
+        <p>If you need help with the marketplace, want to report an issue, or have a suggestion, we’re here to help.</p>
+        <div class="info-row">
+          <span>📧</span>
+          <a href="mailto:hello@idealogy.com">hello@idealogy.com</a>
+        </div>
+        <div class="info-row">
+          <span>💬</span>
+          <span>Expect a response within 1-2 business days.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-form-card">
+      <h2>Send us a message</h2>
+      <p>Share your questions, feedback, or feature ideas.</p>
+
+      @if (error()) {
+        <div class="form-error">{{ error() }}</div>
+      }
+
+      @if (submitted()) {
+        <div class="form-success">
+          Thanks for your message! We’ll review it and follow up soon.
+        </div>
+      }
+
+      <form (submit)="onSubmit(); $event.preventDefault()">
+        <div class="form-row">
+          <label>Name</label>
+          <input
+            type="text"
+            [value]="name()"
+            (input)="onNameInput($event)"
+            placeholder="Your name"
+          />
+        </div>
+
+        <div class="form-row">
+          <label>Email</label>
+          <input
+            type="email"
+            [value]="email()"
+            (input)="onEmailInput($event)"
+            placeholder="you@example.com"
+          />
+        </div>
+
+        <div class="form-row">
+          <label>Message</label>
+          <textarea
+            rows="6"
+            [value]="message()"
+            (input)="onMessageInput($event)"
+            placeholder="Tell us what’s on your mind..."
+          ></textarea>
+        </div>
+
+        <button type="submit" class="contact-submit">Send message</button>
+      </form>
+    </section>
+  </div>
+</div>

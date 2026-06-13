@@ -8,6 +8,7 @@
     <div class="nav-links">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Marketplace</a>
       <a routerLink="/requests" routerLinkActive="active">Requests</a>
+      <a routerLink="/contact" routerLinkActive="active">Contact</a>
       @if (auth.isLoggedIn()) {
         <a routerLink="/sell" class="btn-sell">+ Sell Idea</a>
       }
