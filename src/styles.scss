@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --color-bg: #07071a;
+  --color-surface: #0f0e1f;
+  --color-surface-2: #161527;
+  --color-border: #252440;
+  --color-primary: #7c6bff;
+  --color-primary-hover: #6a59e8;
+  --color-primary-glow: rgba(124, 107, 255, 0.2);
+  --color-secondary: #ff6b6b;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-text: #f1f0ff;
+  --color-text-secondary: #8b90a8;
+  --color-text-muted: #555870;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.55);
+  --shadow-glow: 0 0 24px rgba(124, 107, 255, 0.25);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+// Badges
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+
+  &-tech {
+    background: rgba(99, 102, 241, 0.14);
+    color: #818cf8;
+  }
+  &-business {
+    background: rgba(245, 158, 11, 0.14);
+    color: #fbbf24;
+  }
+  &-creative {
+    background: rgba(236, 72, 153, 0.14);
+    color: #f472b6;
+  }
+  &-social {
+    background: rgba(16, 185, 129, 0.14);
+    color: #34d399;
+  }
+  &-education {
+    background: rgba(59, 130, 246, 0.14);
+    color: #60a5fa;
+  }
+  &-health {
+    background: rgba(239, 68, 68, 0.14);
+    color: #f87171;
+  }
+  &-other {
+    background: rgba(107, 114, 128, 0.14);
+    color: #9ca3af;
+  }
+  &-available {
+    background: rgba(34, 197, 94, 0.14);
+    color: #4ade80;
+  }
+  &-sold {
+    background: rgba(239, 68, 68, 0.14);
+    color: #f87171;
+  }
+  &-reserved {
+    background: rgba(245, 158, 11, 0.14);
+    color: #fbbf24;
+  }
+  &-open {
+    background: rgba(34, 197, 94, 0.14);
+    color: #4ade80;
+  }
+  &-fulfilled {
+    background: rgba(99, 102, 241, 0.14);
+    color: #818cf8;
+  }
+  &-closed {
+    background: rgba(107, 114, 128, 0.14);
+    color: #9ca3af;
+  }
+}
+
+// Scrollbar
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+  &:hover {
+    background: var(--color-text-muted);
+  }
+}
+

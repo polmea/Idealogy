@@ -1,0 +1,143 @@
+:host {
+  display: block;
+}
+
+.idea-card {
+  display: block;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.22s ease;
+
+  &:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-glow);
+    text-decoration: none;
+  }
+
+  &.sold {
+    opacity: 0.65;
+  }
+}
+
+.card-cover {
+  height: 110px;
+  background: linear-gradient(135deg, var(--color-surface-2), #1e1d40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  .cover-emoji {
+    font-size: 3.5rem;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+  }
+
+  .card-badges {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    display: flex;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .view-count {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0.7rem;
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+  }
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 0.45rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-preview {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.875rem;
+
+  .tag {
+    font-size: 0.68rem;
+    color: var(--color-text-muted);
+    background: var(--color-surface-2);
+    padding: 0.15rem 0.5rem;
+    border-radius: 100px;
+  }
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.seller-info {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.seller-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), #ff6b6b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: white;
+}
+
+.seller-name {
+  font-size: 0.72rem;
+  color: var(--color-text-secondary);
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.price {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--color-primary);
+}

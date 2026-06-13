@@ -1,0 +1,133 @@
+<div class="sell-page">
+  <div class="container">
+    <div class="page-header">
+      <a routerLink="/" class="back-link">← Back</a>
+      <div>
+        <h1>List Your Idea 💡</h1>
+        <p class="subtitle">Share your concept with the world. Set a price, write a teaser, and let the right builder find you.</p>
+      </div>
+    </div>
+
+    @if (submitted()) {
+      <div class="success-state">
+        <span class="success-icon">🎉</span>
+        <h2>Idea listed successfully!</h2>
+        <p>Redirecting to your idea page...</p>
+      </div>
+    } @else {
+      <div class="form-layout">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="sell-form">
+
+          <div class="form-section">
+            <h2 class="form-section-title">Basic Info</h2>
+
+            <div class="form-group">
+              <label>Idea Title *</label>
+              <input type="text" formControlName="title" placeholder="e.g. AI-powered recipe app for reducing food waste" />
+              @if (hasError('title')) {
+                <span class="error">Title must be at least 10 characters.</span>
+              }
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Category *</label>
+                <select formControlName="category">
+                  <option value="tech">⚡ Tech</option>
+                  <option value="business">💼 Business</option>
+                  <option value="creative">🎨 Creative</option>
+                  <option value="social">🌐 Social</option>
+                  <option value="education">📚 Education</option>
+                  <option value="health">💊 Health</option>
+                  <option value="other">🔮 Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Price (USD) *</label>
+                <input type="number" formControlName="price" min="1" max="9999" placeholder="99" />
+                @if (hasError('price')) {
+                  <span class="error">Enter a price between $1 and $9,999.</span>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h2 class="form-section-title">Cover Emoji</h2>
+            <p class="form-section-sub">Pick an emoji that represents your idea (shown on the marketplace card).</p>
+            <div class="emoji-grid">
+              @for (emoji of emojiOptions; track emoji) {
+                <button
+                  type="button"
+                  class="emoji-btn"
+                  [class.active]="selectedEmoji() === emoji"
+                  (click)="selectEmoji(emoji)"
+                >{{ emoji }}</button>
+              }
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h2 class="form-section-title">Descriptions</h2>
+
+            <div class="form-group">
+              <label>Preview Description * <span class="hint">(Public teaser — this is what buyers see before purchasing)</span></label>
+              <textarea
+                formControlName="previewDescription"
+                rows="4"
+                placeholder="Write a compelling 1-2 sentence overview that teases the value of your idea without giving away the full blueprint..."
+              ></textarea>
+              <span class="char-hint">{{ form.get('previewDescription')?.value?.length ?? 0 }}/300</span>
+              @if (hasError('previewDescription')) {
+                <span class="error">Preview description must be at least 50 characters.</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label>Full Blueprint * <span class="hint">(Private — only visible after purchase)</span></label>
+              <textarea
+                formControlName="fullDescription"
+                rows="10"
+                placeholder="Include everything: technical implementation, business model, monetization strategy, go-to-market plan, cost estimates, partnerships, legal considerations, etc."
+              ></textarea>
+              @if (hasError('fullDescription')) {
+                <span class="error">Full description must be at least 100 characters.</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label>Tags * <span class="hint">(Comma-separated, e.g. AI, mobile, SaaS)</span></label>
+              <input type="text" formControlName="tags" placeholder="AI, mobile, marketplace, B2B" />
+              @if (hasError('tags')) {
+                <span class="error">Add at least one tag.</span>
+              }
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="submit-btn" [disabled]="form.invalid">
+              🚀 List My Idea
+            </button>
+            <p class="form-note">Your full description will only be revealed to buyers who purchase your idea.</p>
+          </div>
+        </form>
+
+        <!-- Preview card -->
+        <div class="preview-panel">
+          <h3 class="preview-title">Preview</h3>
+          <div class="preview-card">
+            <div class="preview-cover">
+              <span class="preview-emoji">{{ selectedEmoji() }}</span>
+            </div>
+            <div class="preview-body">
+              <span class="badge badge-{{ form.get('category')?.value }}">{{ form.get('category')?.value }}</span>
+              <h4>{{ form.get('title')?.value || 'Your idea title...' }}</h4>
+              <p>{{ form.get('previewDescription')?.value || 'Your preview description...' }}</p>
+              <div class="preview-price">${{ form.get('price')?.value || 0 }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

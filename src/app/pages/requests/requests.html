@@ -1,0 +1,84 @@
+<div class="requests-page">
+  <div class="container">
+    <div class="page-header">
+      <div>
+        <h1>Idea Requests 📋</h1>
+        <p class="subtitle">Buyers post what they're looking for. Sellers respond with a matching idea.</p>
+      </div>
+      @if (auth.isLoggedIn()) {
+        <button class="btn-post" (click)="toggleForm()">
+          {{ showForm() ? '✕ Cancel' : '+ Post a Request' }}
+        </button>
+      } @else {
+        <a routerLink="/login" class="btn-post">Log in to post</a>
+      }
+    </div>
+
+    <!-- New request form -->
+    @if (showForm()) {
+      <div class="request-form-wrap">
+        <h2>What idea are you looking for?</h2>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label>Title *</label>
+            <input type="text" formControlName="title" placeholder="e.g. B2B SaaS idea in the HR space" />
+            @if (hasError('title')) { <span class="error">At least 10 characters required.</span> }
+          </div>
+          <div class="form-group">
+            <label>Description *</label>
+            <textarea formControlName="description" rows="4" placeholder="Describe what you're looking for in detail — industry, problem to solve, expected deliverables..."></textarea>
+            @if (hasError('description')) { <span class="error">At least 30 characters required.</span> }
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Category *</label>
+              <select formControlName="category">
+                <option value="tech">Tech</option>
+                <option value="business">Business</option>
+                <option value="creative">Creative</option>
+                <option value="social">Social</option>
+                <option value="education">Education</option>
+                <option value="health">Health</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Budget (USD) *</label>
+              <input type="number" formControlName="budget" min="1" placeholder="300" />
+              @if (hasError('budget')) { <span class="error">Enter a valid budget.</span> }
+            </div>
+          </div>
+          <button type="submit" class="submit-btn" [disabled]="form.invalid">Post Request</button>
+        </form>
+      </div>
+    }
+
+    <!-- Filter tabs -->
+    <div class="filter-tabs">
+      <button class="filter-tab" [class.active]="filterStatus() === 'open'" (click)="filterStatus.set('open')">
+        Open ({{ requestService.getOpen().length }})
+      </button>
+      <button class="filter-tab" [class.active]="filterStatus() === 'all'" (click)="filterStatus.set('all')">
+        All Requests
+      </button>
+      <button class="filter-tab" [class.active]="filterStatus() === 'fulfilled'" (click)="filterStatus.set('fulfilled')">
+        Fulfilled
+      </button>
+    </div>
+
+    <!-- Requests grid -->
+    @if (filteredRequests().length > 0) {
+      <div class="requests-grid">
+        @for (req of filteredRequests(); track req.id) {
+          <app-request-card [request]="req" />
+        }
+      </div>
+    } @else {
+      <div class="empty-state">
+        <span class="empty-icon">📋</span>
+        <h3>No requests found</h3>
+        <p>Be the first to post a request!</p>
+      </div>
+    }
+  </div>
+</div>

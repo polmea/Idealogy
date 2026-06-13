@@ -1,0 +1,31 @@
+<div class="request-card" [class.fulfilled]="request().status === 'fulfilled'">
+  <div class="card-header">
+    <div class="requester">
+      <div class="requester-avatar">{{ request().requesterAvatar }}</div>
+      <div class="requester-info">
+        <span class="requester-name">{{ request().requesterName }}</span>
+        <span class="req-date">{{ request().createdAt | date: 'MMM d, y' }}</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="badge badge-{{ request().category }}">{{ request().category }}</span>
+      <span class="badge badge-{{ request().status }}">{{ request().status }}</span>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <h3 class="req-title">{{ request().title }}</h3>
+    <p class="req-desc">{{ request().description }}</p>
+  </div>
+
+  <div class="card-footer">
+    <div class="footer-stat">
+      <span class="stat-icon">💬</span>
+      <span>{{ request().responseCount }} responses</span>
+    </div>
+    <div class="budget">
+      <span class="budget-label">Budget</span>
+      <span class="budget-amount">up to ${{ request().budget }}</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<nav class="navbar">
+  <div class="container nav-inner">
+    <a routerLink="/" class="logo">
+      <span class="logo-icon">💡</span>
+      <span class="logo-text">Idealogy</span>
+    </a>
+
+    <div class="nav-links">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Marketplace</a>
+      <a routerLink="/requests" routerLinkActive="active">Requests</a>
+      @if (auth.isLoggedIn()) {
+        <a routerLink="/sell" class="btn-sell">+ Sell Idea</a>
+      }
+    </div>
+
+    <div class="nav-right">
+      @if (auth.isLoggedIn()) {
+        <div class="user-menu" (click)="toggleMenu()">
+          <div class="avatar">{{ auth.currentUser()!.avatar }}</div>
+          <span class="user-name">{{ auth.currentUser()!.displayName }}</span>
+          <span class="chevron">▾</span>
+          @if (menuOpen()) {
+            <div class="dropdown">
+              <a routerLink="/dashboard" (click)="closeMenu()">
+                <span>📊</span> Dashboard
+              </a>
+              <a routerLink="/sell" (click)="closeMenu()">
+                <span>💡</span> Sell an Idea
+              </a>
+              <a routerLink="/requests" (click)="closeMenu()">
+                <span>📋</span> Browse Requests
+              </a>
+              <div class="divider"></div>
+              <button (click)="logout()"><span>👋</span> Sign out</button>
+            </div>
+          }
+        </div>
+      } @else {
+        <a routerLink="/login" class="btn-login">Log in</a>
+        <a routerLink="/register" class="btn-signup">Sign up free</a>
+      }
+    </div>
+  </div>
+</nav>

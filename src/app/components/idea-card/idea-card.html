@@ -1,0 +1,36 @@
+<a [routerLink]="['/ideas', idea().id]" class="idea-card" [class.sold]="idea().status === 'sold'">
+  <div class="card-cover">
+    <span class="cover-emoji">{{ idea().coverEmoji }}</span>
+    <div class="card-badges">
+      <span class="badge badge-{{ idea().category }}">{{ idea().category }}</span>
+      @if (idea().status === 'sold') {
+        <span class="badge badge-sold">Sold</span>
+      }
+    </div>
+    <div class="view-count">👁 {{ idea().viewCount }}</div>
+  </div>
+
+  <div class="card-body">
+    <h3 class="card-title">{{ idea().title }}</h3>
+    <p class="card-preview">{{ idea().previewDescription }}</p>
+
+    <div class="card-tags">
+      @for (tag of idea().tags.slice(0, 3); track tag) {
+        <span class="tag">#{{ tag }}</span>
+      }
+    </div>
+
+    <div class="card-footer">
+      <div class="seller-info">
+        <div class="seller-avatar">{{ idea().sellerAvatar }}</div>
+        <span class="seller-name">{{ idea().sellerName }}</span>
+      </div>
+      <div class="card-meta">
+        @if (idea().reviewCount > 0) {
+          <app-star-rating [rating]="idea().rating" [count]="idea().reviewCount" />
+        }
+        <span class="price">${{ idea().price }}</span>
+      </div>
+    </div>
+  </div>
+</a>

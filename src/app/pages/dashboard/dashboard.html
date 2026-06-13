@@ -1,0 +1,158 @@
+@if (auth.currentUser()) {
+  <div class="dashboard-page">
+    <div class="container">
+      <div class="dash-header">
+        <div class="dash-user">
+          <div class="dash-avatar">{{ auth.currentUser()!.avatar }}</div>
+          <div>
+            <h1>{{ auth.currentUser()!.displayName }}</h1>
+            <p class="dash-meta">{{ auth.currentUser()!.email }} · Member since {{ auth.currentUser()!.joinedAt | date: 'MMM y' }}</p>
+          </div>
+        </div>
+        <a routerLink="/sell" class="btn-sell">+ List New Idea</a>
+      </div>
+
+      <!-- Stat cards -->
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-icon">💡</span>
+          <div class="stat-info">
+            <span class="stat-num">{{ myListings().length }}</span>
+            <span class="stat-label">Ideas Listed</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">✅</span>
+          <div class="stat-info">
+            <span class="stat-num">{{ soldListings().length }}</span>
+            <span class="stat-label">Ideas Sold</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">💰</span>
+          <div class="stat-info">
+            <span class="stat-num">${{ auth.currentUser()!.totalEarnings }}</span>
+            <span class="stat-label">Total Earned</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">🛒</span>
+          <div class="stat-info">
+            <span class="stat-num">{{ myPurchases().length }}</span>
+            <span class="stat-label">Ideas Purchased</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="dash-tabs">
+        <button class="dash-tab" [class.active]="activeTab() === 'overview'" (click)="setTab('overview')">Overview</button>
+        <button class="dash-tab" [class.active]="activeTab() === 'listings'" (click)="setTab('listings')">
+          My Listings <span class="tab-count">{{ myListings().length }}</span>
+        </button>
+        <button class="dash-tab" [class.active]="activeTab() === 'purchases'" (click)="setTab('purchases')">
+          Purchases <span class="tab-count">{{ myPurchases().length }}</span>
+        </button>
+        <button class="dash-tab" [class.active]="activeTab() === 'requests'" (click)="setTab('requests')">
+          My Requests <span class="tab-count">{{ myRequests().length }}</span>
+        </button>
+      </div>
+
+      <!-- Tab content -->
+      @if (activeTab() === 'overview') {
+        <div class="overview-grid">
+          <div class="overview-section">
+            <h2 class="section-title">Recent Listings</h2>
+            @if (myListings().length > 0) {
+              <div class="ideas-grid-sm">
+                @for (idea of myListings().slice(0, 3); track idea.id) {
+                  <app-idea-card [idea]="idea" />
+                }
+              </div>
+            } @else {
+              <div class="empty-mini">
+                <p>You haven't listed any ideas yet.</p>
+                <a routerLink="/sell" class="link-btn">List your first idea →</a>
+              </div>
+            }
+          </div>
+          <div class="overview-section">
+            <h2 class="section-title">Recent Purchases</h2>
+            @if (myPurchases().length > 0) {
+              <div class="ideas-grid-sm">
+                @for (idea of myPurchases().slice(0, 3); track idea!.id) {
+                  <app-idea-card [idea]="idea!" />
+                }
+              </div>
+            } @else {
+              <div class="empty-mini">
+                <p>You haven't purchased any ideas yet.</p>
+                <a routerLink="/" class="link-btn">Browse Marketplace →</a>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @if (activeTab() === 'listings') {
+        <div>
+          @if (myListings().length > 0) {
+            <div class="ideas-grid-full">
+              @for (idea of myListings(); track idea.id) {
+                <app-idea-card [idea]="idea" />
+              }
+            </div>
+          } @else {
+            <div class="empty-state">
+              <span class="empty-icon">💡</span>
+              <h3>No ideas listed yet</h3>
+              <p>Share your concepts with the world.</p>
+              <a routerLink="/sell" class="btn-primary-sm">List your first idea</a>
+            </div>
+          }
+        </div>
+      }
+
+      @if (activeTab() === 'purchases') {
+        <div>
+          @if (myPurchases().length > 0) {
+            <div class="ideas-grid-full">
+              @for (idea of myPurchases(); track idea!.id) {
+                <app-idea-card [idea]="idea!" />
+              }
+            </div>
+          } @else {
+            <div class="empty-state">
+              <span class="empty-icon">🛒</span>
+              <h3>No purchases yet</h3>
+              <p>Browse the marketplace to find ideas you love.</p>
+              <a routerLink="/" class="btn-primary-sm">Browse Marketplace</a>
+            </div>
+          }
+        </div>
+      }
+
+      @if (activeTab() === 'requests') {
+        <div>
+          <div class="section-action">
+            <a routerLink="/requests" class="link-btn">View all requests →</a>
+          </div>
+          @if (myRequests().length > 0) {
+            <div class="requests-grid">
+              @for (req of myRequests(); track req.id) {
+                <app-request-card [request]="req" />
+              }
+            </div>
+          } @else {
+            <div class="empty-state">
+              <span class="empty-icon">📋</span>
+              <h3>No requests posted</h3>
+              <p>Post a request to find the exact idea you're looking for.</p>
+              <a routerLink="/requests" class="btn-primary-sm">Post a Request</a>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}

@@ -1,0 +1,207 @@
+@if (idea()) {
+  <div class="detail-page">
+    <div class="container">
+      <!-- Back -->
+      <a routerLink="/" class="back-link">← Back to Marketplace</a>
+
+      <div class="detail-layout">
+        <!-- Main content -->
+        <div class="detail-main">
+          <div class="idea-header">
+            <div class="idea-cover">
+              <span class="cover-emoji">{{ idea()!.coverEmoji }}</span>
+            </div>
+            <div class="idea-meta">
+              <div class="meta-badges">
+                <span class="badge badge-{{ idea()!.category }}">{{ idea()!.category }}</span>
+                <span class="badge badge-{{ idea()!.status }}">{{ idea()!.status }}</span>
+              </div>
+              <h1 class="idea-title">{{ idea()!.title }}</h1>
+              <div class="idea-stats">
+                @if (idea()!.reviewCount > 0) {
+                  <app-star-rating [rating]="idea()!.rating" [count]="idea()!.reviewCount" />
+                }
+                <span class="stat-dot">·</span>
+                <span class="view-stat">👁 {{ idea()!.viewCount }} views</span>
+                <span class="stat-dot">·</span>
+                <span class="date-stat">{{ idea()!.createdAt | date: 'MMM d, y' }}</span>
+              </div>
+              <div class="idea-tags">
+                @for (tag of idea()!.tags; track tag) {
+                  <span class="tag">#{{ tag }}</span>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Preview description -->
+          <div class="section">
+            <h2 class="section-heading">About this Idea</h2>
+            <p class="preview-text">{{ idea()!.previewDescription }}</p>
+          </div>
+
+          <!-- Full description (locked/unlocked) -->
+          <div class="section">
+            <h2 class="section-heading">
+              Full Blueprint
+              @if (!hasPurchased() && !isOwnIdea()) {
+                <span class="lock-badge">🔒 Locked</span>
+              } @else {
+                <span class="unlock-badge">✓ Unlocked</span>
+              }
+            </h2>
+
+            @if (hasPurchased() || isOwnIdea()) {
+              <div class="full-description unlocked">
+                <p>{{ idea()!.fullDescription }}</p>
+              </div>
+            } @else {
+              <div class="full-description locked">
+                <p class="blurred-text">{{ idea()!.fullDescription }}</p>
+                <div class="lock-overlay">
+                  <span class="lock-icon">🔒</span>
+                  <p>Purchase to unlock the complete blueprint</p>
+                  <ul class="unlock-perks">
+                    <li>✓ Full technical implementation details</li>
+                    <li>✓ Business model & monetization strategy</li>
+                    <li>✓ Go-to-market playbook</li>
+                    <li>✓ Cost & revenue estimates</li>
+                  </ul>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Purchase success banner -->
+          @if (purchaseSuccess()) {
+            <div class="success-banner">
+              🎉 Purchase successful! You now have full access to this idea.
+            </div>
+          }
+
+          <!-- Reviews -->
+          <div class="section">
+            <h2 class="section-heading">Reviews ({{ reviews().length }})</h2>
+            @if (reviews().length > 0) {
+              <div class="reviews-list">
+                @for (review of reviews(); track review.id) {
+                  <div class="review-item">
+                    <div class="review-header">
+                      <div class="reviewer-avatar">{{ review.buyerAvatar }}</div>
+                      <div class="reviewer-info">
+                        <span class="reviewer-name">{{ review.buyerName }}</span>
+                        <span class="review-date">{{ review.createdAt | date: 'MMM d, y' }}</span>
+                      </div>
+                      <div class="review-stars">
+                        <app-star-rating [rating]="review.rating" [showCount]="false" />
+                      </div>
+                    </div>
+                    <p class="review-comment">{{ review.comment }}</p>
+                  </div>
+                }
+              </div>
+            } @else {
+              <p class="no-reviews">No reviews yet. Be the first!</p>
+            }
+
+            <!-- Add review form -->
+            @if (canReview()) {
+              <div class="add-review">
+                <h3>Leave a Review</h3>
+                <div class="star-picker">
+                  @for (n of [1, 2, 3, 4, 5]; track n) {
+                    <span
+                      class="star-pick"
+                      [class.active]="n <= reviewStars()"
+                      (click)="setReviewStar(n)"
+                    >★</span>
+                  }
+                </div>
+                <form [formGroup]="reviewForm" (ngSubmit)="submitReview()">
+                  <textarea
+                    formControlName="comment"
+                    placeholder="Share your experience with this idea..."
+                    rows="4"
+                  ></textarea>
+                  <button type="submit" class="btn-primary" [disabled]="reviewForm.invalid">
+                    Submit Review
+                  </button>
+                </form>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="detail-sidebar">
+          <div class="buy-card">
+            <div class="price-display">${{ idea()!.price }}</div>
+
+            @if (isOwnIdea()) {
+              <div class="own-idea-badge">This is your listing</div>
+            } @else if (idea()!.status === 'sold') {
+              @if (hasPurchased()) {
+                <div class="purchased-badge">✓ Purchased</div>
+              } @else {
+                <div class="sold-badge">Sold Out</div>
+              }
+            } @else {
+              @if (hasPurchased()) {
+                <div class="purchased-badge">✓ Already Purchased</div>
+              } @else if (!showPurchaseConfirm()) {
+                <button class="buy-btn" (click)="confirmPurchase()">
+                  🛒 Buy This Idea
+                </button>
+              } @else {
+                <div class="confirm-purchase">
+                  <p>Confirm purchase of <strong>{{ idea()!.title }}</strong> for <strong>${{ idea()!.price }}</strong>?</p>
+                  <button class="buy-btn" (click)="executePurchase()">✓ Confirm Purchase</button>
+                  <button class="cancel-btn" (click)="showPurchaseConfirm.set(false)">Cancel</button>
+                </div>
+              }
+            }
+
+            <ul class="buy-perks">
+              <li>✓ Full implementation blueprint</li>
+              <li>✓ Business model included</li>
+              <li>✓ Leave a review after purchase</li>
+            </ul>
+          </div>
+
+          <!-- Seller card -->
+          @if (sellerInfo) {
+            <div class="seller-card">
+              <h3>About the Seller</h3>
+              <div class="seller-profile">
+                <div class="seller-avatar-lg">{{ sellerInfo.avatar }}</div>
+                <div>
+                  <div class="seller-name-lg">{{ sellerInfo.displayName }}</div>
+                  @if (sellerInfo.rating > 0) {
+                    <app-star-rating [rating]="sellerInfo.rating" [count]="sellerInfo.reviewCount" />
+                  }
+                </div>
+              </div>
+              @if (sellerInfo.bio) {
+                <p class="seller-bio">{{ sellerInfo.bio }}</p>
+              }
+              <div class="seller-stats">
+                <div class="s-stat">
+                  <span class="s-num">{{ sellerInfo.listedIdeaIds.length }}</span>
+                  <span class="s-label">Ideas Listed</span>
+                </div>
+                <div class="s-stat">
+                  <span class="s-num">${{ sellerInfo.totalEarnings }}</span>
+                  <span class="s-label">Total Earned</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="loading-state container">Loading...</div>
+}
+
+<!-- Purchase confirm overlay -->

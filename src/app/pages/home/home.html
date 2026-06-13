@@ -1,0 +1,89 @@
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-tag">💡 The Idea Marketplace</div>
+      <h1>Where <span class="gradient-text">Ideas</span> Find Their Purpose</h1>
+      <p class="hero-sub">
+        Buy ready-to-execute startup blueprints from visionary thinkers.<br />
+        Or sell your best concepts to the right builder.
+      </p>
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search ideas, tags, or topics..."
+          [value]="searchTerm()"
+          (input)="onSearch($event)"
+        />
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">{{ stats().total }}</span>
+          <span class="stat-label">Total Ideas</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num">{{ stats().available }}</span>
+          <span class="stat-label">Available</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num">{{ stats().sold }}</span>
+          <span class="stat-label">Sold</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="marketplace">
+  <div class="container">
+    <div class="filter-bar">
+      <div class="category-tabs">
+        @for (cat of categories; track cat.value) {
+          <button
+            class="cat-tab"
+            [class.active]="selectedCategory() === cat.value"
+            (click)="selectCategory(cat.value)"
+          >
+            {{ cat.emoji }} {{ cat.label }}
+          </button>
+        }
+      </div>
+      <div class="filter-right">
+        <label class="toggle-wrap">
+          <input
+            type="checkbox"
+            [checked]="showAvailableOnly()"
+            (change)="showAvailableOnly.set(!showAvailableOnly())"
+          />
+          <span>Available only</span>
+        </label>
+        <select class="sort-select" (change)="onSortChange($event)">
+          <option value="latest">Latest</option>
+          <option value="rating">Top Rated</option>
+          <option value="price-asc">Price: Low → High</option>
+          <option value="price-desc">Price: High → Low</option>
+        </select>
+      </div>
+    </div>
+
+    @if (filteredIdeas().length > 0) {
+      <div class="result-count">
+        Showing <strong>{{ filteredIdeas().length }}</strong> idea{{ filteredIdeas().length !== 1 ? 's' : '' }}
+      </div>
+      <div class="ideas-grid">
+        @for (idea of filteredIdeas(); track idea.id) {
+          <app-idea-card [idea]="idea" />
+        }
+      </div>
+    } @else {
+      <div class="empty-state">
+        <span class="empty-icon">🔍</span>
+        <h3>No ideas found</h3>
+        <p>Try adjusting your search or filters</p>
+      </div>
+    }
+  </div>
+</section>
